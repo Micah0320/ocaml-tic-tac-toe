@@ -33,6 +33,14 @@ let generatePos list size =
 ;;
 let holeList = generatePos (generateCoords holeList) size;;
 
+let listSize list =
+  let rec lS list ret = match list with
+      [] -> ret
+    | x::xs -> lS xs (ret + 1)
+  in lS list  0
+;;
+
+
 let init_board size =
   let rec initialize_board s list =
     if s > 0 then initialize_board (s - 1) ([" "] @ list)
@@ -63,7 +71,8 @@ let init_inBetween size =
 
 
 
-let board = finishBoard holeList (init_board size) size;;
+let board = if listSize holeList = 0 then init_board size else
+finishBoard holeList (init_board size) size;;
 let inBetween = init_inBetween size;;
 
 (*
@@ -363,7 +372,7 @@ let getDRIndex board start size =
       if start = 0 then
         if x = " " then
           getDRin xs (-1) size acc
-        else getDRin xs (size - 1) size (acc + size + 1)
+        else getDRin xs (size) size (acc + size + 2)
       else
           getDRin xs (start - 1) size acc
      
@@ -532,4 +541,3 @@ let main board size=
 ;;
 
 main board size;;
-
